@@ -1,8 +1,10 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 const CameraFeed = ({ videoRef }) => {
   const constraints = {
-    video: true,
+    video: {
+      facingMode: { ideal: 'environment' } // for the back camera
+    }
   };
 
   useEffect(() => {
@@ -16,6 +18,15 @@ const CameraFeed = ({ videoRef }) => {
         .catch((error) => {
           console.error('Error accessing camera:', error);
         });
+    }
+  }, [videoRef]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      video.addEventListener('loadedmetadata', () => {
+        console.log(video.videoWidth);
+      });
     }
   }, [videoRef]);
 

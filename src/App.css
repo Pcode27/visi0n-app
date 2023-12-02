@@ -3,37 +3,14 @@
   background-color: #f4f4f4;
   color: #000;
   text-align: center;
-   min-height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 20px;
 }
-.App.light {
-  background-color: #f4f4f4;
-  color: #000;
-}
 
-.App.dark {
-  background-color: #333;
-  color: #fff;
-}
-/* App Header */
-.app-header {
-  background-color: #007bff;
-  color: #fff;
-  padding: 10px;
-}
-
-.app-header h1 {
-  font-size: 2rem;
-  margin: 0;
-}
-
-.app-header p {
-  font-size: 1rem;
-}
 
 /* App Content */
 .app-content {
@@ -43,54 +20,30 @@
   justify-content: center;
 }
 
-/* Camera Feed */
-.camera-feed {
-  flex: 1;
-  padding: 10px;
-}
-
-/* Sidebar */
-.sidebar {
-  flex: 1;
-  padding: 10px;
-}
-
-/* Customize other component styles as needed */
-/* CSS for the homepage */
-
 /* General styling for the entire page */
 body {
   font-family: Arial, sans-serif;
-  margin: 0;
+  margin: 0; /* Remove default margin */
   padding: 0;
 }
 
-/* Styling for the header section */
+/* Styling for the title section */
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #333;
-  color: #fff;
-  padding: 10px 20px;
+  margin: 0; /* Remove default margin */
 }
 
-.title {
-  font-size: 24px;
-  
+/* Styling for the title section */
+.header .title {
+  font-size: 4rem; 
+  font-weight: bold; 
+  font-family: 'Arial', sans-serif; 
+  text-align: center; 
+  margin-top: 0; /* Removed margin-top */
+  color: #383535; /* Changed text color to white */
+  background-color: #dad604; /* Added background color */
 }
 
-.settings-button {
-  background-color: #444;
-  color: #fff;
-  border: none;
-  padding: 10px 15px;
-  cursor: pointer;
-}
 
-.settings-button:hover {
-  background-color: #555;
-}
 
 /* Styling for the camera feed section */
 .camera-feed {
@@ -98,13 +51,13 @@ body {
   justify-content: center;
   align-items: center;
   height: 70vh;
-  background-color: #080808;
+  background-color: #f5f3f3;
 }
 
 .camera-feed video {
-  max-width: 100%;
-  border-radius: 15px;
-  box-shadow: 0 0 10px rgba(31, 29, 29, 0.5);
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 /* Styling for the start object detection button */
@@ -114,93 +67,43 @@ body {
   padding: 20px;
 }
 
+/* Updated button styling */
 .button-container button {
   background-color: #0074D9;
   color: #fff;
   border: none;
-  padding: 15px 30px; /* Increase padding */
+  padding: 20px 40px; /* Increased padding */
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease; /* Add transition */
-  border-radius: 25px; /* Add border-radius */
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1); /* Add box-shadow */
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  border-radius: 30px; /* Slightly increased border-radius */
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  font-size: 1.2rem;
+  text-transform: uppercase; /* Uppercase button text */
 }
 
 .button-container button:hover {
   background-color: #0056b3;
-  transform: scale(1.05); /* Add scale transformation on hover */
+  transform: scale(1.1); /* Slightly increased scale on hover */
 }
 
 .button-container button:active {
-  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1); /* Change box-shadow on active */
-  transform: scale(1); /* Reset scale on active */
-}
-/* Add this to your CSS file */
-.settings-modal {
-  position: fixed;
-  top: 0; /* Position the modal at the top of the page */
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7); /* Add a semi-transparent background */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000; /* Ensure the modal is above other elements */
-  transition: opacity 0.3s ease;
-  opacity: 0;
-  pointer-events: none;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+  transform: scale(1);
 }
 
-/* Settings screen styles */
-.settings-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #fff;
-  z-index: 1000;
-  display: none;
-  padding: 20px;
-  overflow-y: auto; /* Enable scrolling for smaller screens */
+
+@keyframes typing {
+  from { width: 0; }
 }
 
-.settings-screen h2 {
-  font-size: 24px;
-  margin-bottom: 20px;
-  color: #333;
+@keyframes blink {
+  50% { border-color: transparent; }
 }
 
-.settings-screen select {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
+.typeWriter {
+  border-right: 2px solid;
+  width: fit-content;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: typing 2s steps(40, end), blink 0.75s step-end infinite;
 }
-
-.settings-screen button {
-  padding: 12px 24px;
-  font-size: 16px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.settings-screen button:hover {
-  background-color: #0056b3;
-}
-
-/* Media query for mobile devices */
-@media (max-width: 768px) {
-  .settings-screen {
-    display: block;
-  }
-
-  /* Additional adjustments for smaller screens if needed */
-}
-

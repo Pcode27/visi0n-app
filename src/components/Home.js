@@ -1,63 +1,71 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import CameraFeed from './CameraFeed';
-import SettingsScreen from './Settings';
+import axios from 'axios';
 
 const HomePage = () => {
-  const [isObjectDetectionRunning, setObjectDetectionRunning] = useState(false);
-  const [isCameraActive, setCameraActive] = useState(false);
-  const [isSettingsScreenOpen, setSettingsScreenOpen] = useState(false);
-  const [theme, setTheme] = useState('light');
-  const [fontSize, setFontSize] = useState('medium');
   const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+  const [isCameraActive, setCameraActive] = useState(false);
+  const [isNavigationActive, setNavigationActive] = useState(false);
+  let intervalId = null;
+
+  const captureImage = (video) => {
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const context = canvas.getContext('2d');
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    return canvas.toDataURL('image/jpeg');
+  };
 
   const startObjectDetection = () => {
-    // Logic to start/stop object detection
-  };
-
-  const handleSettingsClick = () => {
-    console.log('Settings button clicked');
-    setSettingsScreenOpen(true);
-  };
-
-  const closeSettingsScreen = () => {
-    console.log('Closing settings screen');
-    setSettingsScreenOpen(false);
-  };
-
-  const handleThemeChange = (selectedTheme) => {
-    console.log('Theme changed:', selectedTheme);
-    setTheme(selectedTheme);
-  };
-
-  const handleFontSizeChange = (selectedFontSize) => {
-    console.log('Font size changed:', selectedFontSize);
-    setFontSize(selectedFontSize);
+    if (!isCameraActive) {
+      intervalId = setInterval(async () => {
+        const image = captureImage(videoRef.current);
+        try {
+          /* const response = await axios.post('http://localhost:5000/detect', { image });
+  
+          // Draw results on canvas
+          const context = canvasRef.current.getContext('2d');
+          context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+          for (const object of response.data) {
+            context.beginPath();
+            context.rect(object.x, object.y, object.width, object.height);
+            context.lineWidth = 2;
+            context.strokeStyle = 'red';
+            context.fillStyle = 'red';
+            context.stroke();
+            context.fillText(
+              `${Math.round(object.score * 100)}% ${object.class}`,
+              object.x,
+              object.y > 10 ? object.y - 5 : 10
+            );
+          } */
+        } catch (error) {
+          console.error('Error during object detection:', error);
+        }
+      }, 1000);
+    } else {
+      clearInterval(intervalId);
+    }
+  
+    setCameraActive(!isCameraActive); // Toggle isCameraActive state
   };
 
   return (
     <div>
       <div className="header">
         <div className="title">VISION</div>
-        <button className="settings-button" onClick={handleSettingsClick}>Settings</button>
       </div>
       <div className="camera-feed">
         <CameraFeed videoRef={videoRef} />
+        <canvas ref={canvasRef} style={{ position: 'absolute' }} />
       </div>
       <div className="button-container">
         <button onClick={startObjectDetection}>
-          {isCameraActive ? (isObjectDetectionRunning ? 'Stop Object Detection' : 'Start Object Detection') : <img src="" alt= "Start Camera" />}
+          {isCameraActive ? 'STOP NAVIGATION' : 'START NAVIGATION'}
         </button>
       </div>
-
-      {isSettingsScreenOpen && (
-        <SettingsScreen
-          theme={theme}
-          fontSize={fontSize}
-          onThemeChange={handleThemeChange}
-          onFontSizeChange={handleFontSizeChange}
-          onClose={closeSettingsScreen}
-        />
-      )}
     </div>
   );
 };
